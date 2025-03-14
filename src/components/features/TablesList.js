@@ -1,7 +1,7 @@
 import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getAllTables } from '../../redux/tableReducer';
+import { getAllTables } from '../../redux/tablesRedux';
 import Spinner from 'react-bootstrap/Spinner';
 
 export const TablesList = () => {
