@@ -6,7 +6,7 @@ import {
     FormControl,
     Spinner,
 } from 'react-bootstrap';
-import { editTableRequest, getTableById } from '../../redux/tablesReducer';
+import { editTableRequest, getTableById } from '../../redux/tableReducer';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';

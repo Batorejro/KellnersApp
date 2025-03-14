@@ -11,7 +11,7 @@ import { SingleTable } from './components/features/SingleTable';
 import { Header } from './components/views/Header';
 import { Footer } from './components/views/Footer';
 
-import { fetchData } from './redux/tablesReducer';
+import { fetchData } from './redux/tableReducer';
 
 export const App = () => {
   const dispatch = useDispatch();

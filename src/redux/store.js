@@ -5,7 +5,7 @@ import {
     compose,
 } from 'redux';
 import { initialState } from './initialState';
-import { tablesReducer } from './tablesReducer';
+import { tablesReducer } from './tableReducer';
 import { statusReducer } from './requestStatusReducer';
 import thunk from 'redux-thunk';
 
