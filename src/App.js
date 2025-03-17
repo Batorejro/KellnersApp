@@ -1,34 +1,31 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-
-import { Container } from 'react-bootstrap';
-
+import { fetchTables } from "./redux/tablesRedux";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { Container } from "react-bootstrap";
+import Header from "./components/views/Header/Header";
 import { Routes, Route } from 'react-router-dom';
+import Home from "./components/pages/Home/Home";
+import PageNotFound from "./components/pages/PageNotFound/PageNotFound";
+import TablePage from "./components/pages/TablePage/TablePage";
+import Footer from "./components/views/Footer/Footer";
 
-import { Home } from './components/pages/Home';
-import { NotFound } from './components/pages/NotFound';
-import { SingleTable } from './components/features/SingleTable';
-import { Header } from './components/views/Header';
-import { Footer } from './components/views/Footer';
 
-import { fetchData } from './redux/tablesRedux';
-
-export const App = () => {
+function App() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchData());
-  }, [dispatch]);
+  useEffect(() => dispatch(fetchTables()), [dispatch]);
 
   return (
     <Container>
       <Header />
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/table/:id' element={<SingleTable />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/table/:tableId" element={<TablePage />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />
     </Container>
   );
 };
+
+export default App;

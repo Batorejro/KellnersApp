@@ -1,26 +1,21 @@
-import {
-    legacy_createStore,
-    combineReducers,
-    applyMiddleware,
-    compose,
-} from 'redux';
-import { initialState } from './initialState';
-import { tablesReducer } from './tablesRedux';
-import { statusReducer } from './requestStatusReducer';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import initialState from './initialState';
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from '@redux-devtools/extension';
+import tablesReducer from './tablesRedux';
 
 const subreducers = {
     tables: tablesReducer,
-    tableRequestPending: statusReducer,
-};
+}
 
 const reducer = combineReducers(subreducers);
 
-export const store = legacy_createStore(
+const composedEnhancers = compose(applyMiddleware(thunk), composeWithDevTools());
+
+const store = createStore(
     reducer,
     initialState,
-    compose(
-        applyMiddleware(thunk),
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    )
+    composedEnhancers
 );
+
+export default store;

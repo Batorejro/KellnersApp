@@ -1,66 +1,63 @@
-import { API_URL } from '../config';
-import { changeStatus } from './requestStatusReducer';
+import { API_URL } from "../config";
 
-//selectors
-export const getAllTables = ({ tables }) => tables;
+// selectors
+export const getAllTables = (state) => state.tables;
+export const getTableById = ({ tables }, tableId) => tables.find(table => table.id === tableId);
 
-export const getTableById = ({ tables }, id) =>
-    tables.find((table) => table.id === id);
+//action names
+const createActionName = name => `app/books/${name}`;
+const UPDATE_TABLES = createActionName('UPDATE_TABLES');
+const UPDATE_TABLE = createActionName('UPDATE_TABLE');
 
-// actions
-const createActionName = (action) => {
-    return `app/tables/${action}`;
-};
-
-const GET_DATA = createActionName('GET_DATA');
-
-const EDIT_TABLE = createActionName('EDIT_TABLE');
-
-// action creators
-export const getData = (payload) => ({ type: GET_DATA, payload });
-
-export const editTable = (payload) => ({ type: EDIT_TABLE, payload });
-
-export const fetchData = () => {
+//action creators
+export const updateTables = payload => ({ type: UPDATE_TABLES, payload });
+export const updateTable = payload => ({ type: UPDATE_TABLE, payload })
+export const fetchTables = () => {
     return (dispatch) => {
-        dispatch(changeStatus(true));
         fetch(`${API_URL}/tables`)
-            .then((response) => response.json())
-            .then((data) => dispatch(getData(data)))
-            .then(() => dispatch(changeStatus(false)));
+            .then(res => res.json())
+            .then(tables => dispatch(updateTables(tables)));
     };
 };
-
-export const editTableRequest = (editedTable) => {
+export const fetchTable = (payload) => {
     return (dispatch) => {
         const options = {
+            type: UPDATE_TABLE,
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(editedTable),
+            body: JSON.stringify({
+                id: payload.id,
+                status: payload.status,
+                peopleAmount: payload.peopleAmount,
+                maxPeopleAmount: payload.maxPeopleAmount,
+                bill: payload.bill
+            }),
         };
-
-        fetch(`${API_URL}/tables/${editedTable.id}`, options)
-            .then((response) => response.json())
-            .then((data) => dispatch(editTable(data)));
+        fetch(`${API_URL}/tables/${payload.id}`, options)
+            .then(res => res.json())
+            .then(updatedTable => {
+                dispatch(updateTable(updatedTable));
+            })
     };
 };
 
-// reducer
-export const tablesReducer = (statePart = [], action) => {
+const reducer = (statePart = [], action) => {
     switch (action.type) {
-        case EDIT_TABLE:
-            return statePart.map((table) => {
+        case UPDATE_TABLES:
+            return [...action.payload]
+        case UPDATE_TABLE:
+            return statePart.map(table => {
                 if (table.id === action.payload.id) {
-                    return { ...table, ...action.payload };
+                    return { ...action.payload };
                 } else {
                     return table;
                 }
             });
-        case GET_DATA:
-            return [...action.payload];
         default:
-            return statePart;
+            return statePart
     }
 };
+
+export default reducer;
