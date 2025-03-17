@@ -1,8 +1,8 @@
 import styles from './Home.module.scss';
 import { useSelector } from 'react-redux';
 import { getAllTables } from '../../../redux/tablesRedux';
-import Nav from 'react-bootstrap/Nav';
-import { NavLink } from 'react-router-dom';
+//import Nav from 'react-bootstrap/Nav';
+//import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import { useState } from 'react';
